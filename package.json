@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "ChatGPT chatbot",
   "type": "module",
-  "main": "index.js",
+  "main": "chatbot.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node chatbot.js",
+    "test": "npx jest"
   },
   "author": "Kody Gaston",
   "license": "MIT",
@@ -14,5 +15,9 @@
     "dotenv": "^16.3.1",
     "openai": "^3.3.0",
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@jest/globals": "^27.5.1",
+    "jest": "^25.0.0"
   }
 }
