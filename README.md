@@ -53,10 +53,12 @@ To use the OpenAI ChatBot, follow these steps:
 6. Save the conversation history to a JSON file using the save_to_file(file_path) method.
 7. Refer to the code and comments in the repository for more detailed usage examples and customization options.
 
-#Contributing
+# Contributing
 
-Contributions to the OpenAI ChatBot are welcome! If you encounter any issues or have suggestions for improvements, feel free to submit a pull request or open an issue on the repository.
+Contributions to the OpenAI ChatBot are welcome! 
 
-#License
+If you encounter any issues or have suggestions for improvements, feel free to submit a pull request or open an issue on the repository.
+
+# License
 
 This project is licensed under the MIT License.
