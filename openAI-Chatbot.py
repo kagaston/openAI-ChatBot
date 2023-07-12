@@ -1,9 +1,9 @@
 import logging
 
-from api_key_provider import APIKeyProvider, EnvironmentVariableProvider, DotEnvFileProvider
-from colors import Color
-from chatbot import Chatbot
-from formatters import JSONFormatter
+from src.api_key_provider import APIKeyProvider
+from src.colors import Color
+from src.chatbot import Chatbot
+from src.formatters import JSONFormatter
 
 
 def configure_logging():
