@@ -1,35 +1,7 @@
-###########
-#IntelliJ IDEA
-.idea/
-
-# Compiled output
-/out/
-/classes/
-/target/
-
-# Dependency directories
-/.gradle/
-/.idea_modules/
-/maven/
-
-# Testing
-/test-output/
-/.test-results/
-
-# Editor-specific files
-*.iml
-*.ipr
-*.iws
-*.idea/
-
-###########
-# Python entries
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
 *.pyd
 *.dll
@@ -39,16 +11,23 @@ dist/
 build/
 eggs/
 *.egg-info/
-.env
 
 # Virtual environments
+.venv/
 venv/
 env/
-.env/
-.env.bak/
-pip-selfcheck.json
 
-# Additional IDE-specific files
+# Environment
+.env
+
+# uv
+.python-version
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
 .vscode/
 *.sublime-project
 *.sublime-workspace
@@ -56,20 +35,18 @@ pip-selfcheck.json
 # macOS
 .DS_Store
 
-# Jupyter Notebook
-.ipynb_checkpoints/
-
 # Testing
 htmlcov/
 .coverage
 .tox/
+.pytest_cache/
+.basedpyright/
 
-# Logs and temporary files
+# Logs
+logs/
 *.log
 *.swp
 *~
 
-
-# Custom entries:
-openAI-Chatbot-log.json
+# Project-specific
 conversation_history_*.json

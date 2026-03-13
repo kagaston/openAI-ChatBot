@@ -1,0 +1,38 @@
+[project]
+name = "openai-chatbot"
+version = "0.1.0"
+description = "CLI chatbot supporting OpenAI-compatible providers (OpenAI, xAI)"
+requires-python = ">=3.11"
+dependencies = [
+    "chatbot-app",
+    "chatbot-logger",
+    "chatbot-settings",
+    "chatbot-errors",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0",
+    "pytest-cov>=6.0",
+    "ruff>=0.9",
+    "basedpyright>=1.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["app/*"]
+exclude = ["app/__pycache__", "app/.pytest_cache"]
+
+[tool.uv.sources]
+chatbot-app = { workspace = true }
+chatbot-logger = { workspace = true }
+chatbot-settings = { workspace = true }
+chatbot-errors = { workspace = true }
+
+[tool.pytest.ini_options]
+testpaths = ["app/*/tests"]
+
+[tool.ruff]
+line-length = 120

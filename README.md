@@ -1,24 +1,39 @@
 # OpenAI ChatBot
 
-This repository contains code and resources for building a chatbot using the OpenAI Chat API and the GPT-3.5-turbo model.
+A CLI chatbot supporting OpenAI-compatible Chat Completions APIs.
 
-## Overview
+| Provider | Default Model | Docs |
+|----------|--------------|------|
+| **OpenAI** | `gpt-4o-mini` | [platform.openai.com](https://platform.openai.com/docs) |
+| **xAI (Grok)** | `grok-3-mini` | [docs.x.ai](https://docs.x.ai/overview) |
 
-The OpenAI ChatBot is an implementation that allows you to interact with a chatbot powered by the OpenAI GPT-3.5-turbo model. It provides a convenient way to add user messages, obtain chatbot replies, and save conversation history to a JSON file.
+## Project Structure
 
-## Features
-
-- Send user messages and receive chatbot replies using the OpenAI Chat API
-- Maintain a conversation history with roles (user, assistant) and message content
-- Save conversation history to a JSON file for reference or analysis
-- Utilize utility methods for timestamp generation, JSON file updates, and filename generation
+```
+openAI-ChatBot/
+├── app/
+│   ├── chatbot/          # Main CLI application
+│   │   ├── src/chatbot/
+│   │   └── tests/
+│   ├── logger/           # Shared logging (color, plain, JSON)
+│   │   ├── src/logger/
+│   │   └── tests/
+│   ├── settings/         # Environment config constants
+│   │   ├── src/settings/
+│   │   └── tests/
+│   └── errors/           # Exception hierarchy and error handler
+│       ├── src/errors/
+│       └── tests/
+├── justfile
+├── pyproject.toml
+└── .env.example
+```
 
 ## Requirements
 
-To use the OpenAI ChatBot, ensure you have the following:
-
-- Python 3.x
-- OpenAI API key
+- Python 3.11+
+- [uv](https://docs.astral.sh/uv/) package manager
+- An API key from at least one supported provider
 
 ## Getting Started
 
@@ -26,39 +41,71 @@ To use the OpenAI ChatBot, ensure you have the following:
 
    ```shell
    git clone https://github.com/kagaston/openAI-ChatBot.git
+   cd openAI-ChatBot
    ```
-   
-2. Install the required dependencies:
-    ```shell
-    pip install -r requirements.txt
-    ```
 
-3. Set up your OpenAI API key:
-Visit the OpenAI website to sign up for an API key.
-Set the OPENAI_API_KEY environment variable or update the config.py file with your API key.
-Explore the example code and files provided in the repository to understand how to use and customize the chatbot.
+2. Install dependencies:
 
-## Usage
+   ```shell
+   just install
+   ```
 
-To use the OpenAI ChatBot, follow these steps:
+3. Copy and fill in your `.env`:
 
-1. Import the Chatbot class from chatbot.py into your Python script.
-2. Instantiate a Chatbot object by providing your OpenAI API key:
-    ```python
-    chatbot = Chatbot(api_key)
-    ```
-3. Add user messages to the conversation using the add_user_message(content) method.
-4. Obtain chatbot replies based on user input using the get_reply(user_input) method.
-5. Add assistant messages to the conversation using the add_assistant_message(content) method.
-6. Save the conversation history to a JSON file using the save_to_file(file_path) method.
-7. Refer to the code and comments in the repository for more detailed usage examples and customization options.
+   ```shell
+   cp .env.example .env
+   ```
 
-# Contributing
+   ```shell
+   # OpenAI (default)
+   CHATBOT_PROVIDER=openai
+   OPENAI_API_KEY=sk-...
 
-Contributions to the OpenAI ChatBot are welcome! 
+   # -- or xAI (Grok) --
+   CHATBOT_PROVIDER=xai
+   XAI_API_KEY=xai-...
+   ```
 
-If you encounter any issues or have suggestions for improvements, feel free to submit a pull request or open an issue on the repository.
+4. Run the chatbot:
 
-# License
+   ```shell
+   just run
+   ```
+
+   Type `exit`, `quit`, or `q` to end the session.
+
+## Development
+
+```shell
+just install        # install deps
+just format         # ruff format
+just lint           # ruff check --fix
+just typecheck      # basedpyright
+just test           # all tests
+just test chatbot   # tests for one package
+just update         # uv lock --upgrade
+just clean          # remove caches
+```
+
+## Adding a New Provider
+
+Add an entry in `app/chatbot/src/chatbot/providers.py`:
+
+```python
+PROVIDERS["my_provider"] = ProviderConfig(
+    name="My Provider",
+    base_url="https://api.example.com/v1",
+    api_key_env="MY_PROVIDER_API_KEY",
+    default_model="my-model",
+)
+```
+
+Then set `CHATBOT_PROVIDER=my_provider` and the corresponding API key in `.env`.
+
+## Contributing
+
+Contributions are welcome! Feel free to submit a pull request or open an issue.
+
+## License
 
 This project is licensed under the MIT License.
