@@ -5,8 +5,8 @@ from __future__ import annotations
 from chatbot.bot import Chatbot
 from chatbot.colors import Color
 from chatbot.providers import resolve_api_key, resolve_provider
-from errors import handle_error
-from logger import get_logger, setup_logging
+from errors.handler import handle_error
+from logger.config import get_logger, setup_logging
 
 log = get_logger("app")
 
@@ -15,8 +15,8 @@ class ChatbotApp:
     """CLI wrapper around :class:`Chatbot`."""
 
     def __init__(self, chatbot: Chatbot, provider_name: str) -> None:
-        self.chatbot = chatbot
-        self.provider_name = provider_name
+        self.chatbot: Chatbot = chatbot
+        self.provider_name: str = provider_name
 
     def run(self) -> None:
         print(f"{Color.CYAN.value}Using provider: {self.provider_name}{Color.END.value}")
@@ -38,16 +38,13 @@ class ChatbotApp:
             return
 
         if reply:
-            print(
-                f"{Color.GREEN.value}Chatbot: {Color.END.value}"
-                f"{Color.BLUE.value}{reply}{Color.END.value}"
-            )
+            print(f"{Color.GREEN.value}Chatbot: {Color.END.value}{Color.BLUE.value}{reply}{Color.END.value}")
         else:
             print(f"{Color.RED.value}Oops! Something went wrong. Please try again.{Color.END.value}")
 
     def _save_conversation_history(self) -> None:
         try:
-            chat_data = {
+            chat_data: dict[str, object] = {
                 "ts": self.chatbot.generate_timestamp(),
                 "messages": self.chatbot.messages,
             }
@@ -58,7 +55,7 @@ class ChatbotApp:
 
 
 def main() -> None:
-    setup_logging("chatbot")
+    _ = setup_logging("chatbot")
     provider = resolve_provider()
     api_key = resolve_api_key(provider)
     chatbot = Chatbot(api_key, provider)

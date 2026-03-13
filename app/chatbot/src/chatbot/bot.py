@@ -5,21 +5,23 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from json import JSONDecodeError, dump, load
 from os import path
+from typing import cast
 
 from openai import OpenAI, OpenAIError
+from openai.types.chat import ChatCompletionMessageParam
 
 from chatbot.providers import ProviderConfig
-from errors import ProviderError, ConversationError
+from errors.handler import ConversationError, ProviderError
 
 
 class Chatbot:
     """Interactive chatbot backed by an OpenAI-compatible Chat Completions API."""
 
     def __init__(self, api_key: str, provider: ProviderConfig) -> None:
-        self._client = OpenAI(api_key=api_key, base_url=provider.base_url)
-        self._model = provider.default_model
-        self._provider = provider
-        self.messages: list[dict[str, str]] = [
+        self._client: OpenAI = OpenAI(api_key=api_key, base_url=provider.base_url)
+        self._model: str = provider.default_model
+        self._provider: ProviderConfig = provider
+        self.messages: list[ChatCompletionMessageParam] = [
             {"role": "system", "content": "You are a helpful assistant."},
         ]
 
@@ -39,16 +41,14 @@ class Chatbot:
             )
             reply = response.choices[0].message.content
         except OpenAIError as exc:
-            raise ProviderError(
-                f"API request failed: {exc}", provider=self._provider.name
-            ) from exc
+            raise ProviderError(f"API request failed: {exc}", provider=self._provider.name) from exc
 
         if reply:
             self.add_assistant_message(reply)
         return reply
 
     def save_to_file(self) -> None:
-        chat_data = {"ts": self.generate_timestamp(), "messages": self.messages}
+        chat_data: dict[str, object] = {"ts": self.generate_timestamp(), "messages": self.messages}
         file_path = self.generate_filename_with_utc_date("conversation_history", "json")
         self.update_json_file(file_path, chat_data)
 
@@ -57,11 +57,12 @@ class Chatbot:
         return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
     @staticmethod
-    def update_json_file(file_path: str, new_data: dict) -> None:
+    def update_json_file(file_path: str, new_data: dict[str, object]) -> None:
         try:
+            existing_data: list[dict[str, object]]
             if path.exists(file_path):
                 with open(file_path, "r") as fh:
-                    existing_data = load(fh)
+                    existing_data = cast(list[dict[str, object]], load(fh))
             else:
                 existing_data = []
 

@@ -36,7 +36,7 @@ PROVIDERS: dict[str, ProviderConfig] = {
 
 def resolve_provider() -> ProviderConfig:
     """Read CHATBOT_PROVIDER from the environment and return its config."""
-    load_dotenv()
+    _ = load_dotenv()
     name = os.environ.get("CHATBOT_PROVIDER", DEFAULT_PROVIDER).lower()
     if name not in PROVIDERS:
         available = ", ".join(sorted(PROVIDERS))
@@ -46,7 +46,7 @@ def resolve_provider() -> ProviderConfig:
 
 def resolve_api_key(provider: ProviderConfig) -> str:
     """Resolve the API key for a given provider from the environment."""
-    load_dotenv()
+    _ = load_dotenv()
     api_key = os.environ.get(provider.api_key_env)
     if not api_key:
         raise ValueError(f"{provider.api_key_env} not found in environment variables or .env file")

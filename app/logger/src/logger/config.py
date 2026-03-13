@@ -23,6 +23,7 @@ import sys
 from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from typing import override
 
 _RESET = "\033[0m"
 _BOLD = "\033[1m"
@@ -50,6 +51,7 @@ class ColorFormatter(logging.Formatter):
     def __init__(self) -> None:
         super().__init__(_PLAIN_FMT, datefmt=_DATE_FMT)
 
+    @override
     def format(self, record: logging.LogRecord) -> str:
         level_color = _LEVEL_COLORS.get(record.levelname, "")
         level_tag = f"{level_color}{_BOLD}{record.levelname:<8}{_RESET}"
@@ -83,8 +85,9 @@ class PlainFormatter(logging.Formatter):
 class JSONFormatter(logging.Formatter):
     """Structured JSON log output for production environments."""
 
+    @override
     def format(self, record: logging.LogRecord) -> str:
-        entry = {
+        entry: dict[str, str] = {
             "ts": datetime.now(timezone.utc).isoformat(),
             "level": record.levelname,
             "logger": record.name,
@@ -145,9 +148,7 @@ def setup_logging(
             if log_format == "json":
                 ch.setFormatter(JSONFormatter())
             else:
-                use_color = (
-                    color and log_format != "plain" and hasattr(sys.stderr, "isatty") and sys.stderr.isatty()
-                )
+                use_color = color and log_format != "plain" and hasattr(sys.stderr, "isatty") and sys.stderr.isatty()
                 ch.setFormatter(ColorFormatter() if use_color else PlainFormatter())
 
             ch.set_name(_CONSOLE_HANDLER_NAME)
