@@ -33,6 +33,7 @@ chatbot-errors = { workspace = true }
 
 [tool.pytest.ini_options]
 testpaths = ["app/*/tests"]
+addopts = ["--import-mode=importlib"]
 
 [tool.ruff]
 line-length = 120
