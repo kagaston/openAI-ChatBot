@@ -32,8 +32,19 @@ chatbot-settings = { workspace = true }
 chatbot-errors = { workspace = true }
 
 [tool.pytest.ini_options]
-testpaths = ["app/*/tests"]
 addopts = ["--import-mode=importlib"]
+
+[tool.coverage.run]
+source = [
+    "chatbot",
+    "logger",
+    "settings",
+    "errors",
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
 
 [tool.ruff]
 line-length = 120

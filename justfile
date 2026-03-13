@@ -18,7 +18,7 @@ test pkg="*" *args="":
     uv run pytest app/{{pkg}}/tests/ -v --tb=short {{args}}
 
 test-cov:
-    uv run pytest app/*/tests/ --cov=app --cov-report=term-missing --tb=short
+    uv run pytest app/*/tests/ --cov --tb=short
 
 run *args="":
     uv run python -m chatbot {{args}}
